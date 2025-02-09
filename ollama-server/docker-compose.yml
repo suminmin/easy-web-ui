@@ -1,0 +1,22 @@
+services:
+  server-ollama:
+    image: ollama/ollama
+    platform: linux/amd64
+    ports:
+      - "11434:11434"  # Ollama
+    volumes:
+      - ./ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all  # Or specify a number like "1"
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    runtime: nvidia  # Important for GPU access
+    network_mode: host
+    
+    
